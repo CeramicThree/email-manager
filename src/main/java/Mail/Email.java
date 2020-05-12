@@ -45,20 +45,24 @@ public class Email {
      * @param to электронный адрес получателя.
      */
     public void sendMessage(String to) {
-        final String from = this.mail;
-        final String password = this.password;
+        final String from = mail;
+        final String fromPassword = password;
         String host = "smtp.mail.ru";
 
         Properties props = new Properties();
+        props.setProperty("mail.transport.protocol", "smtp");
+        props.setProperty("mail.host", host);
         props.put("mail.smtp.auth", "true");
-        props.put("mail.smtp.starttls.enable", "true");
-        props.put("mail.smtp.host", host);
         props.put("mail.smtp.port", "465");
+        props.put("mail.smtp.socketFactory.port", "465");
+        props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+        props.put("mail.smtp.socketFactory.fallback", "false");
+        props.setProperty("mail.smtp.quitwait", "false");
 
         Session session = Session.getInstance(props,
                 new javax.mail.Authenticator(){
                     protected PasswordAuthentication getPassAuth(){
-                        return new PasswordAuthentication(from, password);
+                        return new PasswordAuthentication(from, fromPassword);
                     }
         });
 
